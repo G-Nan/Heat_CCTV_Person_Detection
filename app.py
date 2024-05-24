@@ -15,9 +15,9 @@ model.overrides['max_det'] = 1000  # maximum number of detections per image
 app = Flask(__name__)
 
 # 일반 CCTV 영상 파일 경로
-video1_path = 'path/to/your/normal_cctv_video.mp4'
+video1_path = 'video/CCTV_Detection_Real.mp4'
 # 적외선 CCTV 영상 파일 경로
-video2_path = 'path/to/your/infrared_cctv_video.mp4'
+video2_path = 'video/CCTV_Detection_Thermal.mp4'
 
 def detect_objects(frame):
     results = model(frame)
@@ -30,7 +30,10 @@ def draw_boxes(frame, results):
             x1, y1, x2, y2 = map(int, box.xyxy[0])
             conf = box.conf[0]
             cls = int(box.cls[0])
-            label = model.names[cls]
+            if cls in model.names:
+                label = model.names[cls]
+            else:
+                label = f'Unknown {cls}'
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
             cv2.putText(frame, f'{label} {conf:.2f}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
     return frame
