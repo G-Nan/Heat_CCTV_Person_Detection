@@ -5,10 +5,7 @@ from ultralyticsplus import YOLO, render_result
 from flask import Flask, Response, render_template, request, redirect, url_for
 
 # load model
-model_path = hf_hub_download(
-    repo_id = "arnabdhar/YOLOv8-human-detection-thermal",
-    filename = "model.pt"
-)
+model_path = 'yolov8n.pt'
 
 # load model
 model = YOLO(model_path)
@@ -79,4 +76,4 @@ def video_feed2():
     return Response(generate_frames(video2_path), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run()
