@@ -1,10 +1,17 @@
 import os
 import cv2
+from huggingface_hub import hf_hub_download
 from ultralyticsplus import YOLO, render_result
 from flask import Flask, Response, render_template, request, redirect, url_for
 
 # load model
-model = YOLO('foduucom/thermal-image-object-detection')
+model_path = hf_hub_download(
+    repo_id = "arnabdhar/YOLOv8-human-detection-thermal",
+    filename = "model.pt"
+)
+
+# load model
+model = YOLO(model_path)
 
 # set model parameters
 model.overrides['conf'] = 0.25  # NMS confidence threshold
