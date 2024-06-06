@@ -35,11 +35,8 @@ def draw_boxes(frame, results):
 def main():
 
     # Read video files
-    video_file1 = open('video/CCTV_Detection_Real.mp4', 'rb').read()
-    video_file2 = open('video/CCTV_Detection_Thermal.mp4', 'rb').read()
-
-    video_bytes1 = video_file1.decode('latin-1')
-    video_bytes2 = video_file2.decode('latin-1')
+    video_file1 = 'video/CCTV_Detection_Real.mp4'
+    video_file2 = 'video/CCTV_Detection_Thermal.mp4'
 
     # JavaScript for synchronizing videos
     synchronize_videos_js = f"""
@@ -82,21 +79,11 @@ def main():
 
     with col1:
         st.header("Normal CCTV")
-        video_html1 = f"""
-            <video id="video1" width="100%" controls>
-                <source src="data:video/mp4;base64,{video_bytes1}" type="video/mp4">
-            </video>
-        """
-        st.markdown(video_html1, unsafe_allow_html=True)
+        st.video(video_file1)
 
     with col2:
         st.header("Infrared CCTV")
-        video_html2 = f"""
-            <video id="video2" width="100%" controls>
-                <source src="data:video/mp4;base64,{video_bytes2}" type="video/mp4">
-            </video>
-        """
-        st.markdown(video_html2, unsafe_allow_html=True)
+        st.video(video_file2)
 
     # Insert the synchronization script
     st.markdown(synchronize_videos_js, unsafe_allow_html=True)
