@@ -3,9 +3,10 @@ import os
 
 def play_video(video_path):
     if os.path.exists(video_path):
-        video_file = open(video_path, 'rb')
-        video_bytes = video_file.read()
-        st.video(video_bytes)
+        with open(video_path, 'rb') as video_file:
+            video_bytes = video_file.read()
+            st.write(f"Video size: {len(video_bytes)} bytes")
+            st.video(video_bytes)
     else:
         st.error(f"File not found: {video_path}")
 
