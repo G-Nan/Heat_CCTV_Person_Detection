@@ -33,26 +33,29 @@ def draw_boxes(frame, results):
     return frame
 
 def main():
-    st.title("Object Detection with YOLOv8")
-    
-    # Select video source
-    video_source = st.selectbox("Select video source", ("CCTV_Detection_Real.mp4", "CCTV_Detection_Thermal.mp4"))
-    
-    # Display video
-    stframe = st.empty()
-    cap = cv2.VideoCapture(video_source)
-    
-    while cap.isOpened():
-        ret, frame = cap.read()
-        if not ret:
-            break
-        
-        results = detect_objects(frame)
-        frame = draw_boxes(frame, results)
-        
-        stframe.image(frame, channels="BGR")
+    st.set_page_config(layout="wide")
+    st.title("Object Detection Using Normal/Infrared CCTV")
 
-    cap.release()
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.header("Normal CCTV")
+        video_file1 = open('video/CCTV_Detection_Real.mp4', 'rb')
+        video_bytes1 = video_file1.read()
+        st.video(video_bytes1)
+
+    with col2:
+        st.header("Infrared CCTV")
+        video_file2 = open('video/CCTV_Detection_Thermal.mp4', 'rb')
+        video_bytes2 = video_file2.read()
+        st.video(video_bytes2)
+
+    st.markdown("""
+    <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
+        <h2>About This Demo</h2>
+        <p>해당 서비스는 현재 편의를 위해 서비스의 성능을 잘 나타낼 수 있는 동영상을 업로드 하여 시범중입니다. 실제 서비스에서는 CCTV에서 촬영된 영상을 실시간으로 확인하여 사람과 동물 등을 탐지합니다.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
