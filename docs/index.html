@@ -25,22 +25,22 @@
     <div class="video-container">
         <div class="video-box">
             <h2>Normal CCTV</h2>
-            <video id="video1" width="100%" autoplay muted loop>
-                <source src="video/CCTV_Detection_Real_Processed.mp4" type="video/mp4">
+            <video id="video1" width="100%" muted loop>
+                <source src="video/CCTV_Detection_Real_Processed_reencoded.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
         <div class="video-box">
             <h2>Infrared CCTV</h2>
-            <video id="video2" width="100%" autoplay muted loop>
-                <source src="video/CCTV_Detection_Thermal_Processed.mp4" type="video/mp4">
+            <video id="video2" width="100%" muted loop>
+                <source src="video/CCTV_Detection_Thermal_Processed_reencoded.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
         </div>
     </div>
     <div class="description">
         <h2>About This Demo</h2>
-        <p>해당 서비스는 현재 편의를 위해 서비스의 성능을 잘 나타낼 수 있는 동영상을 업로드 하여 시범중입니다. 실제 서비스에서는 CCTV에서 촬영된 영상을 실시간으로 확인하여 사람과 동물 등을 탐지합니다.</p>
+        <p>해당 서비스는 현재 편의를 위해 서비스의 성능을 잘 나타낼 수 있는 동영상을 업로드하여 시범 중입니다. 실제 서비스에서는 CCTV에서 촬영된 영상을 실시간으로 확인하여 사람과 동물 등을 탐지합니다.</p>
     </div>
 
     <script>
@@ -48,7 +48,29 @@
         var video1 = document.getElementById('video1');
         var video2 = document.getElementById('video2');
 
-        // 동영상이 재생될 때 동기화 시작
+        var videosLoaded = 0;
+
+        // Check if both videos are loaded
+        function checkAndPlayVideos() {
+            if (videosLoaded === 2) {
+                video1.play();
+                video2.play();
+            }
+        }
+
+        // Event listener for when the first video is loaded
+        video1.oncanplaythrough = function() {
+            videosLoaded += 1;
+            checkAndPlayVideos();
+        };
+
+        // Event listener for when the second video is loaded
+        video2.oncanplaythrough = function() {
+            videosLoaded += 1;
+            checkAndPlayVideos();
+        };
+
+        // Sync play and pause
         function syncPlay() {
             if (video1.paused) {
                 video1.play();
@@ -58,7 +80,6 @@
             }
         }
 
-        // 동영상이 일시 중지될 때 동기화 중지
         function syncPause() {
             if (!video1.paused) {
                 video1.pause();
@@ -68,7 +89,6 @@
             }
         }
 
-        // 동영상이 끝날 때 동기화 재생
         video1.onended = function() {
             video2.currentTime = 0;
             video1.currentTime = 0;
