@@ -33,6 +33,48 @@ def draw_boxes(frame, results):
     return frame
 
 def main():
+
+    # Read video files
+    video_file1 = open('video/CCTV_Detection_Real.mp4', 'rb').read()
+    video_file2 = open('video/CCTV_Detection_Thermal.mp4', 'rb').read()
+
+    video_bytes1 = video_file1.decode('latin-1')
+    video_bytes2 = video_file2.decode('latin-1')
+
+    # JavaScript for synchronizing videos
+    synchronize_videos_js = f"""
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {{
+        var video1 = document.getElementById('video1');
+        var video2 = document.getElementById('video2');
+
+        video1.onended = function() {{
+            if (!video2.ended) {{
+                video2.onended = function() {{
+                    video1.play();
+                    video2.play();
+                }};
+            }} else {{
+                video1.play();
+                video2.play();
+            }}
+        }};
+
+        video2.onended = function() {{
+            if (!video1.ended) {{
+                video1.onended = function() {{
+                    video1.play();
+                    video2.play();
+                }};
+            }} else {{
+                video1.play();
+                video2.play();
+            }}
+        }};
+    }});
+    </script>
+    """
+
     st.set_page_config(layout="wide")
     st.title("Object Detection Using Normal/Infrared CCTV")
 
@@ -40,15 +82,24 @@ def main():
 
     with col1:
         st.header("Normal CCTV")
-        video_file1 = open('video/CCTV_Detection_Real.mp4', 'rb')
-        video_bytes1 = video_file1.read()
-        st.video(video_bytes1)
+        video_html1 = f"""
+            <video id="video1" width="100%" controls>
+                <source src="data:video/mp4;base64,{video_bytes1}" type="video/mp4">
+            </video>
+        """
+        st.markdown(video_html1, unsafe_allow_html=True)
 
     with col2:
         st.header("Infrared CCTV")
-        video_file2 = open('video/CCTV_Detection_Thermal.mp4', 'rb')
-        video_bytes2 = video_file2.read()
-        st.video(video_bytes2)
+        video_html2 = f"""
+            <video id="video2" width="100%" controls>
+                <source src="data:video/mp4;base64,{video_bytes2}" type="video/mp4">
+            </video>
+        """
+        st.markdown(video_html2, unsafe_allow_html=True)
+
+    # Insert the synchronization script
+    st.markdown(synchronize_videos_js, unsafe_allow_html=True)
 
     st.markdown("""
     <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
