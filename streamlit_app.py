@@ -3,7 +3,7 @@ import streamlit as st
 def play_video(video_path):
     video_file = open(video_path, 'rb')
     video_bytes = video_file.read()
-    st.video(video_bytes)
+    st.video(video_path)
 
 def main():
     st.set_page_config(layout="wide")
