@@ -62,18 +62,13 @@ def main():
 
     col1, col2 = st.columns(2)
 
-    start_button = st.button('Start Videos')
+    with col1:
+        st.header("Normal CCTV")
+        play_video('video/CCTV_Detection_Real.mp4')
 
-    if start_button:
-        with col1:
-            st.header("Normal CCTV")
-            video_file1 = 'video/CCTV_Detection_Real.mp4'
-            play_video(video_file1)
-
-        with col2:
-            st.header("Infrared CCTV")
-            video_file2 = 'video/CCTV_Detection_Thermal.mp4'
-            play_video(video_file2)
+    with col2:
+        st.header("Infrared CCTV")
+        play_video('video/CCTV_Detection_Thermal.mp4')
     
     st.markdown("""
     <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
