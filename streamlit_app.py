@@ -13,11 +13,11 @@ def main():
 
     with col1:
         st.header("Normal CCTV")
-        play_video('video/CCTV_Detection_Real_processed.mp4')
+        play_video('video/CCTV_Detection_Real.mp4')
 
     with col2:
         st.header("Infrared CCTV")
-        play_video('video/CCTV_Detection_Thermal_processed.mp4')
+        play_video('video/CCTV_Detection_Thermal.mp4')
     
     st.markdown("""
     <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
