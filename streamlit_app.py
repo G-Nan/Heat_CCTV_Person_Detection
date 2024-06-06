@@ -1,9 +1,14 @@
 import streamlit as st
+import os
 
 def play_video(video_path):
-    video_file = open(video_path, 'rb')
-    video_bytes = video_file.read()
-    st.video(video_path)
+    if os.path.exists(video_path):
+        with open(video_path, 'rb') as video_file:
+            video_bytes = video_file.read()
+            st.write(f"Video size: {len(video_bytes)/(1024*1024):.2f} bytes")
+            st.video(video_bytes)
+    else:
+        st.error(f"File not found: {video_path}")
 
 def main():
     st.set_page_config(layout="wide")
@@ -13,11 +18,11 @@ def main():
 
     with col1:
         st.header("Normal CCTV")
-        play_video('video/CCTV_Detection_Real_Processed.mp4')
+        play_video('processed/CCTV_Detection_Real_Processed.mp4')
 
     with col2:
         st.header("Infrared CCTV")
-        play_video('video/CCTV_Detection_Thermal_Processed.mp4')
+        play_video('processed/CCTV_Detection_Thermal_Processed.mp4')
     
     st.markdown("""
     <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
