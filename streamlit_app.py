@@ -71,7 +71,7 @@ def main():
     st.title("Normal/Infrared CCTV Videos")
 
     # HTML과 JavaScript 코드를 Streamlit 앱에 삽입
-    st.components.v1.html(html_code, height=600)
+    st.components.html(html_code, height=600)
 
     st.markdown("""
     <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
