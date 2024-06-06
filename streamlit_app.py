@@ -2,7 +2,7 @@ import streamlit as st
 
 def play_video(video_path):
     video_file = open(video_path, 'rb')
-    video_bytes = video_file
+    video_bytes = video_file.read()
     st.video(video_bytes)
 
 def main():
