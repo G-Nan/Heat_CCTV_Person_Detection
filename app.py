@@ -1,45 +1,12 @@
 import cv2
-#import waitress
-from ultralyticsplus import YOLO
 from flask import Flask, Response, render_template
-
-# load model
-model_path = 'thermal_detection.pt'
-
-# load model
-model = YOLO(model_path)
-
-# set model parameters
-model.overrides['conf'] = 0.25  # NMS confidence threshold
-model.overrides['iou'] = 0.45  # NMS IoU threshold
-model.overrides['agnostic_nms'] = False  # NMS class-agnostic
-model.overrides['max_det'] = 1000  # maximum number of detections per image
 
 app = Flask(__name__)
 
 # 일반 CCTV 영상 파일 경로
-video1_path = 'video/CCTV_Detection_Real.mp4'
+video1_path = 'video/CCTV_Detection_Real_Processed.mp4'
 # 적외선 CCTV 영상 파일 경로
-video2_path = 'video/CCTV_Detection_Thermal.mp4'
-
-def detect_objects(frame):
-    results = model(frame)
-    return results
-
-def draw_boxes(frame, results):
-    for result in results:
-        boxes = result.boxes
-        for box in boxes:
-            x1, y1, x2, y2 = map(int, box.xyxy[0])
-            conf = box.conf[0]
-            cls = int(box.cls[0])
-            if cls in model.names:
-                label = model.names[cls]
-            else:
-                label = f'Unknown {cls}'
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            cv2.putText(frame, f'{label} {conf:.2f}', (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-    return frame
+video2_path = 'video/CCTV_Detection_Thermal_Processed.mp4'
 
 def generate_frames(video_path):
     cap = cv2.VideoCapture(video_path)
@@ -52,9 +19,6 @@ def generate_frames(video_path):
             cap.release()
             cap = cv2.VideoCapture(video_path)
             continue
-
-        results = detect_objects(frame)
-        frame = draw_boxes(frame, results)
         
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
@@ -76,4 +40,3 @@ def video_feed2():
 
 if __name__ == '__main__':
     app.run(host = '0.0.0.0', port = 5000)
-    #waitress.serve(app, host='0.0.0.0', port=5000)
