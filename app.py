@@ -1,11 +1,10 @@
-import os
 import cv2
-from huggingface_hub import hf_hub_download
-from ultralyticsplus import YOLO, render_result
-from flask import Flask, Response, render_template, request, redirect, url_for
+#import waitress
+from ultralyticsplus import YOLO
+from flask import Flask, Response, render_template
 
 # load model
-model_path = 'yolov8n.pt'
+model_path = 'thermal_detection.pt'
 
 # load model
 model = YOLO(model_path)
@@ -76,4 +75,5 @@ def video_feed2():
     return Response(generate_frames(video2_path), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host = '0.0.0.0', port = 5000)
+    #waitress.serve(app, host='0.0.0.0', port=5000)
