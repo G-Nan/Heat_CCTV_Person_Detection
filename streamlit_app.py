@@ -62,27 +62,18 @@ def main():
 
     col1, col2 = st.columns(2)
 
-    with col1:
-        st.header("Normal CCTV")
-        video_file1 = 'video/CCTV_Detection_Real.mp4'
-        video_bytes1 = open(video_file1, 'rb').read()
-        video_html1 = f"""
-            <video id="video1" width="100%" autoplay loop>
-                <source src="data:video/mp4;base64,{video_bytes1.decode('latin-1')}" type="video/mp4">
-            </video>
-        """
-        st.markdown(video_html1, unsafe_allow_html=True)
+    start_button = st.button('Start Videos')
 
-    with col2:
-        st.header("Infrared CCTV")
-        video_file2 = 'video/CCTV_Detection_Thermal.mp4'
-        video_bytes2 = open(video_file2, 'rb').read()
-        video_html2 = f"""
-            <video id="video2" width="100%" autoplay loop>
-                <source src="data:video/mp4;base64,{video_bytes2.decode('latin-1')}" type="video/mp4">
-            </video>
-        """
-        st.markdown(video_html2, unsafe_allow_html=True)
+    if start_button:
+        with col1:
+            st.header("Normal CCTV")
+            video_file1 = 'video/CCTV_Detection_Real.mp4'
+            play_video(video_file1)
+
+        with col2:
+            st.header("Infrared CCTV")
+            video_file2 = 'video/CCTV_Detection_Thermal.mp4'
+            play_video(video_file2)
     
     st.markdown("""
     <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
