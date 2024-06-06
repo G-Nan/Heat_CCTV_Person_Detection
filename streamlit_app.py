@@ -13,7 +13,7 @@ def main():
 
     with col1:
         st.header("Normal CCTV")
-        play_video('video/CCTV_Detection_Real_Processed.mp4')
+        play_video('video/CCTV_Detection_Rea')
 
     with col2:
         st.header("Infrared CCTV")
