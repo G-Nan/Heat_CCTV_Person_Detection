@@ -22,7 +22,7 @@ def main():
 
     with col2:
         st.header("Infrared CCTV")
-        play_video('processed/CCTV_Detection_Thermal_Processed.mp4')
+        play_video('processed/Thermal_Processed.mp4')
     
     st.markdown("""
     <div style="margin-top: 20px; padding: 10px; background-color: #f0f0f0; border: 1px solid #ccc;">
