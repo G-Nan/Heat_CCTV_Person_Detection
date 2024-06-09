@@ -8,9 +8,11 @@
         .video-container {
             display: flex;
             justify-content: space-around;
+            flex-wrap: wrap;
         }
         .video-box {
             width: 48%;
+            margin-bottom: 20px;
         }
         .description {
             margin-top: 20px;
@@ -23,6 +25,20 @@
 <body>
     <h1>Normal/Infrared CCTV Videos</h1>
     <div class="video-container">
+        <div class="video-box">
+            <h2>Denoising Real Video</h2>
+            <video id="video3" width="100%" muted loop>
+                <source src="video/CCTV_Detection_Real_Noised.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div class="video-box">
+            <h2>Denoising Thermal Video</h2>
+            <video id="video4" width="100%" muted loop>
+                <source src="video/CCTV_Detection_Thermal_Noised.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
         <div class="video-box">
             <h2>Normal CCTV</h2>
             <video id="video1" width="100%" muted loop>
@@ -47,66 +63,83 @@
     document.addEventListener('DOMContentLoaded', function () {
         var video1 = document.getElementById('video1');
         var video2 = document.getElementById('video2');
+        var video3 = document.getElementById('video3');
+        var video4 = document.getElementById('video4');
 
         var videosLoaded = 0;
 
-        // Check if both videos are loaded
+        // Check if all videos are loaded
         function checkAndPlayVideos() {
-            if (videosLoaded === 2) {
+            if (videosLoaded === 4) {
                 video1.play();
                 video2.play();
+                video3.play();
+                video4.play();
             }
         }
 
-        // Event listener for when the first video is loaded
+        // Event listener for when each video is loaded
         video1.oncanplaythrough = function() {
             videosLoaded += 1;
             checkAndPlayVideos();
         };
 
-        // Event listener for when the second video is loaded
         video2.oncanplaythrough = function() {
+            videosLoaded += 1;
+            checkAndPlayVideos();
+        };
+
+        video3.oncanplaythrough = function() {
+            videosLoaded += 1;
+            checkAndPlayVideos();
+        };
+
+        video4.oncanplaythrough = function() {
             videosLoaded += 1;
             checkAndPlayVideos();
         };
 
         // Sync play and pause
         function syncPlay() {
-            if (video1.paused) {
-                video1.play();
-            }
-            if (video2.paused) {
-                video2.play();
-            }
+            if (video1.paused) video1.play();
+            if (video2.paused) video2.play();
+            if (video3.paused) video3.play();
+            if (video4.paused) video4.play();
         }
 
         function syncPause() {
-            if (!video1.paused) {
-                video1.pause();
-            }
-            if (!video2.paused) {
-                video2.pause();
-            }
+            if (!video1.paused) video1.pause();
+            if (!video2.paused) video2.pause();
+            if (!video3.paused) video3.pause();
+            if (!video4.paused) video4.pause();
         }
 
-        video1.onended = function() {
-            video2.currentTime = 0;
+        // Reset and replay videos when any of them ends
+        function resetAndReplay() {
             video1.currentTime = 0;
-            video2.play();
+            video2.currentTime = 0;
+            video3.currentTime = 0;
+            video4.currentTime = 0;
             video1.play();
-        };
+            video2.play();
+            video3.play();
+            video4.play();
+        }
 
-        video2.onended = function() {
-            video1.currentTime = 0;
-            video2.currentTime = 0;
-            video1.play();
-            video2.play();
-        };
+        video1.onended = resetAndReplay;
+        video2.onended = resetAndReplay;
+        video3.onended = resetAndReplay;
+        video4.onended = resetAndReplay;
 
         video1.onplay = syncPlay;
         video2.onplay = syncPlay;
+        video3.onplay = syncPlay;
+        video4.onplay = syncPlay;
+
         video1.onpause = syncPause;
         video2.onpause = syncPause;
+        video3.onpause = syncPause;
+        video4.onpause = syncPause;
     });
     </script>
 </body>
